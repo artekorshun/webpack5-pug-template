@@ -1,0 +1,40 @@
+{
+	"name": "webpack-pug_template",
+	"version": "1.0.0",
+	"description": "Сборка Webpack + Pug",
+	"main": "index.js",
+	"scripts": {
+		"dev": "webpack serve --config ./config/webpack.dev.conf.js",
+		"build": "webpack --config ./config/webpack.build.conf.js"
+	},
+	"browserslist": [
+		"> 1%",
+		"last 5 versions"
+	],
+	"author": "Artem Korshunov",
+	"license": "ISC",
+	"devDependencies": {
+		"@babel/core": "^7.13.16",
+		"@babel/preset-env": "^7.13.15",
+		"babel-loader": "^8.2.2",
+		"copy-webpack-plugin": "^8.1.1",
+		"css-loader": "^5.2.4",
+		"cssnano": "^5.0.2",
+		"file-loader": "^6.2.0",
+		"html-webpack-plugin": "^5.3.1",
+		"mini-css-extract-plugin": "^1.5.1",
+		"node-sass": "^5.0.0",
+		"path": "^0.12.7",
+		"postcss": "^8.2.13",
+		"postcss-cli": "^8.3.1",
+		"postcss-loader": "^5.2.0",
+		"postcss-preset-env": "^6.7.0",
+		"sass": "^1.32.11",
+		"sass-loader": "^11.0.1",
+		"style-loader": "^2.0.0",
+		"webpack": "^5.36.1",
+		"webpack-cli": "^4.6.0",
+		"webpack-dev-server": "^3.11.2",
+		"webpack-merge": "^5.7.3"
+	}
+}

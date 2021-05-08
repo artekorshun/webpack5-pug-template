@@ -1,0 +1,30 @@
+/* Создайте в файле с переменными */
+
+$media-lg: 1200px; // or em
+$media-mid: 740px;
+$media-sm: 600px;
+
+/* Добавьте в файл с сеткой или в иной файл */
+
+// Media query mixin
+@mixin media($media) {
+	@media only screen and (min-width: $media) {
+		@content;
+	}
+}
+
+// Используйте
+
+.selector {
+	width: 25%;
+
+	@include media($media-sm) {
+		width: 50%;
+	}
+
+	@include media($media-lg) {
+		width: auto;
+	}
+}
+
+/* Если вам нужны еще медиа-запросы, добавьте их сразу в файл с переменными. */
