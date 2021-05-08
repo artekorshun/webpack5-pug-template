@@ -1,5 +1,4 @@
 const path = require('path')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -58,47 +57,6 @@ module.exports = {
 					}
 				}
 			},
-			// SCSS
-			{
-				test: /\.s[ac]ss$/i,
-				use: [
-					'style-loader',
-					{
-						loader: MiniCssExtractPlugin.loader,
-						options: {
-							esModule: false,
-							publicPath: '../'
-						}
-					},
-					{
-						loader: 'css-loader',
-						options: {
-							sourceMap: true
-						}
-					},
-					{
-						loader: 'postcss-loader',
-						options: {
-							postcssOptions: {
-								sourceMap: true,
-								config: './postcss.config.js'
-							}
-						}
-					},
-					{
-						loader: 'sass-loader',
-						options: {
-							sourceMap: true,
-							implementation: require("sass")
-						}
-					}
-				]
-			},
-			// CSS
-			{
-				test: /\.css$/i,
-				use: [MiniCssExtractPlugin.loader, 'css-loader']
-			}
 		]
 	},
 	resolve: {
@@ -108,9 +66,6 @@ module.exports = {
 		}
 	},
 	plugins: [
-		new MiniCssExtractPlugin({
-			filename: `${PATHS.assets}css/[name].[contenthash].css`
-		}),
 		new CopyWebpackPlugin({
 			patterns: [
 				{ from: `${PATHS.src}/assets/img`, to: `${PATHS.assets}img` },

@@ -13,6 +13,44 @@ const devWebpackConfig = merge([baseWebpackConfig, {
 		},
 		open: 'Chrome'
 	},
+	module: {
+		rules: [
+			// SCSS
+			{
+				test: /\.s[ac]ss$/i,
+				use: [
+					'style-loader',
+					{
+						loader: 'css-loader',
+						options: {
+							sourceMap: true
+						}
+					},
+					{
+						loader: 'postcss-loader',
+						options: {
+							postcssOptions: {
+								sourceMap: true,
+								config: './postcss.config.js'
+							}
+						}
+					},
+					{
+						loader: 'sass-loader',
+						options: {
+							sourceMap: true,
+							implementation: require("sass")
+						}
+					}
+				]
+			},
+			// CSS
+			{
+				test: /\.css$/i,
+				use: 'css-loader'
+			}
+		]
+	},
 	plugins: [
 		new webpack.SourceMapDevToolPlugin({
 			filename: '[file].map'
