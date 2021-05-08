@@ -2,6 +2,7 @@ const path = require('path')
 const { merge } = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf.js')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const buildWebpackConfig = merge(baseWebpackConfig, {
 	mode: 'production',
@@ -45,6 +46,12 @@ const buildWebpackConfig = merge(baseWebpackConfig, {
 	plugins: [
 		new MiniCssExtractPlugin({
 			filename: `${baseWebpackConfig.externals.paths.assets}css/[name].[contenthash].css`
+		}),
+		new CopyWebpackPlugin({
+			patterns: [
+				{ from: `${baseWebpackConfig.externals.paths.src}/assets/img`, to: `${baseWebpackConfig.externals.paths.assets}img` },
+				{ from: `${baseWebpackConfig.externals.paths.src}/static`, to: '' }
+			]
 		})
 	]
 })

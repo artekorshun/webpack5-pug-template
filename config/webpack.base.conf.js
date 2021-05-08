@@ -1,5 +1,4 @@
 const path = require('path')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const PATHS = {
@@ -66,12 +65,6 @@ module.exports = {
 		}
 	},
 	plugins: [
-		new CopyWebpackPlugin({
-			patterns: [
-				{ from: `${PATHS.src}/assets/img`, to: `${PATHS.assets}img` },
-				{ from: `${PATHS.src}/static`, to: '' }
-			]
-		}),
 		new HtmlWebpackPlugin({
 			template: `${PATHS.src}/index.html`,
 			title: 'Webpack + Pug template',
