@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const PATHS = {
 	src: path.join(__dirname, '../src'),
@@ -18,7 +19,8 @@ module.exports = {
 	output: {
 		filename: `${PATHS.assets}js/[name].[contenthash].js`,
 		path: PATHS.dist,
-		publicPath: '/'
+		publicPath: '/',
+		assetModuleFilename: `${PATHS.assets}img/[name][ext][query]`
 	},
 	optimization: {
 		splitChunks: {
@@ -49,13 +51,8 @@ module.exports = {
 			// Изображения
 			{
 				test: /\.(png|jpg|gif|svg)$/,
-				use: {
-					loader: 'file-loader',
-					options: {
-						name: '[name].[ext]'
-					}
-				}
-			},
+				type: 'asset/resource'
+			}
 		]
 	},
 	resolve: {
@@ -73,6 +70,11 @@ module.exports = {
 			templateParameters: {
 				'foo': 'bar'
 			}
+		}),
+		new CopyWebpackPlugin({
+			patterns: [
+				{ from: `${PATHS.src}/static`, to: '' }
+			]
 		})
 	]
 }
