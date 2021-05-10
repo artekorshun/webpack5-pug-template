@@ -20,7 +20,7 @@ module.exports = {
 		filename: `${PATHS.assets}js/[name].[contenthash].js`,
 		path: PATHS.dist,
 		publicPath: '/',
-		assetModuleFilename: './[name][ext][query]'
+		assetModuleFilename: './[name].[contenthash][ext][query]'
 	},
 	optimization: {
 		splitChunks: {
@@ -53,7 +53,7 @@ module.exports = {
 				test: /\.(png|jpg|gif|svg)$/,
 				type: 'asset/resource',
 				generator: {
-					filename: `${PATHS.assets}img/[name][ext][query]`
+					filename: `${PATHS.assets}img/[name].[contenthash][ext][query]`
 				}
 			},
 			// Шрифты
@@ -61,7 +61,7 @@ module.exports = {
 				test: /\.(woff|woff2|eot|ttf|otf)$/i,
 				type: 'asset/resource',
 				generator: {
-					filename: `${PATHS.assets}fonts/[name][ext][query]`
+					filename: `${PATHS.assets}fonts/[name].[contenthash][ext][query]`
 				}
 			}
 		]
