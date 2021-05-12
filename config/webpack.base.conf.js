@@ -2,6 +2,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const fs = require('fs')
+const pug = require('pug')
 
 const PATHS = {
 	src: path.join(__dirname, '../src'),
@@ -9,10 +10,10 @@ const PATHS = {
 	assets: 'assets/'
 }
 
-const PAGES_DIR = PATHS.src
+const PAGES_DIR = `${PATHS.src}/pug/pages`
 const PAGES = fs
 	.readdirSync(PAGES_DIR)
-	.filter(fileName => fileName.endsWith('.html'))
+	.filter(fileName => fileName.endsWith('.pug'))
 
 module.exports = {
 	target: 'web',
@@ -41,6 +42,11 @@ module.exports = {
 	},
 	module: {
 		rules: [
+			// PUG
+			{
+				test: /.pug$/i,
+				loader: 'pug-loader'
+			},
 			// JavaScript
 			{
 				test: /\.m?js$/,
@@ -83,29 +89,19 @@ module.exports = {
 		}
 	},
 	plugins: [
-		// HTML первый вариант
-		// ...PAGES.map(
-		// 	page =>
-		// 		new HtmlWebpackPlugin({
-		// 			template: `${PAGES_DIR}/${page}`,
-		// 			filename: `./${page}`,
-		// 			title: 'Webpack + Pug template',
-		// 			inject: 'body'
-		// 		}),
-		// ),
-		// HTML второй вариант
-		new HtmlWebpackPlugin({
-			template: `${PATHS.src}/index.html`,
-			title: 'Webpack + Pug template',
-			inject: 'body',
-			filename: './index.html'
-		}),
-		new HtmlWebpackPlugin({
-			template: `${PATHS.src}/page.html`,
-			title: 'Webpack + Pug template another page',
-			inject: 'body',
-			filename: './page.html'
-		}),
+		// HTML
+		// new HtmlWebpackPlugin({
+		// 	template: `${ PATHS.src }/index.html`,
+		// 	title: 'Webpack + Pug template',
+		// 	inject: 'body',
+		// 	filename: './index.html'
+		// }),
+		// new HtmlWebpackPlugin({
+		// 	template: `${ PATHS.src }/page.html`,
+		// 	title: 'Webpack + Pug template another page',
+		// 	inject: 'body',
+		// 	filename: './page.html'
+		// }),
 		new CopyWebpackPlugin({
 			patterns: [
 				{
@@ -114,6 +110,16 @@ module.exports = {
 				},
 				{ from: `${PATHS.src}/static`, to: '' }
 			]
-		})
+		}),
+		// PUG
+		...PAGES.map(
+			page =>
+				new HtmlWebpackPlugin({
+					template: `${PAGES_DIR}/${page}`,
+					filename: `./${page.replace(/\.pug/, '.html')}`,
+					title: 'Webpack + Pug template',
+					inject: 'body'
+				}),
+		)
 	]
 }
