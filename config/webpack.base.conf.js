@@ -1,13 +1,18 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-
+const fs = require('fs')
 
 const PATHS = {
 	src: path.join(__dirname, '../src'),
 	dist: path.join(__dirname, '../dist'),
 	assets: 'assets/'
 }
+
+const PAGES_DIR = PATHS.src
+const PAGES = fs
+	.readdirSync(PAGES_DIR)
+	.filter(fileName => fileName.endsWith('.html'))
 
 module.exports = {
 	target: 'web',
@@ -50,10 +55,10 @@ module.exports = {
 			},
 			// Изображения
 			{
-				test: /\.(png|jpg|gif|svg)$/,
-				loader: 'file-loader',
-				options: {
-					name: `${PATHS.assets}img/[name].[ext][query]`
+				test: /\.(png|jpg|gif|svg)$/i,
+				type: 'asset/resource',
+				generator: {
+					filename: `${PATHS.assets}img/[name][ext]`
 				}
 			},
 			// Шрифты
@@ -61,7 +66,7 @@ module.exports = {
 				test: /\.(woff|woff2|eot|ttf|otf)$/i,
 				type: 'asset/resource',
 				generator: {
-					filename: `${PATHS.assets}fonts/[name].[contenthash][ext][query]`
+					filename: `${PATHS.assets}fonts/[name][ext]`
 				}
 			},
 			// CSS
@@ -78,11 +83,28 @@ module.exports = {
 		}
 	},
 	plugins: [
+		// HTML первый вариант
+		// ...PAGES.map(
+		// 	page =>
+		// 		new HtmlWebpackPlugin({
+		// 			template: `${PAGES_DIR}/${page}`,
+		// 			filename: `./${page}`,
+		// 			title: 'Webpack + Pug template',
+		// 			inject: 'body'
+		// 		}),
+		// ),
+		// HTML второй вариант
 		new HtmlWebpackPlugin({
 			template: `${PATHS.src}/index.html`,
 			title: 'Webpack + Pug template',
 			inject: 'body',
 			filename: './index.html'
+		}),
+		new HtmlWebpackPlugin({
+			template: `${PATHS.src}/page.html`,
+			title: 'Webpack + Pug template another page',
+			inject: 'body',
+			filename: './page.html'
 		}),
 		new CopyWebpackPlugin({
 			patterns: [
