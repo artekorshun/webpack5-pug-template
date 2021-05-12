@@ -34,12 +34,7 @@ const buildWebpackConfig = merge(baseWebpackConfig, {
 						}
 					}
 				]
-			},
-			// CSS
-			// {
-			// 	test: /\.css$/i,
-			// 	use: MiniCssExtractPlugin.loader
-			// }
+			}
 		]
 	},
 	plugins: [
