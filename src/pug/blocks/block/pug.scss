@@ -1,0 +1,14 @@
+@use "@styles/utils/vars";
+
+.pug {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	img {
+		width: 150px;
+	}
+	h1 {
+		font-size: 40px;
+		color: vars.$color-main;
+	}
+}

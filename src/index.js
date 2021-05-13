@@ -4,10 +4,7 @@
 import './js/main';
 
 // Импорт SCSS
-import './assets/scss/main.scss';
+import '@styles/main.scss';
 
 // Импорт PUG
-import './pug/pages/index.pug';
-
-// Импорт CSS (пример)
-// import './assets/css/main.css';
+import '@pages/index.pug';

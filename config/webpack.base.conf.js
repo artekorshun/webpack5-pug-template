@@ -2,7 +2,6 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const fs = require('fs')
-const pug = require('pug')
 
 const PATHS = {
 	src: path.join(__dirname, '../src'),
@@ -62,9 +61,9 @@ module.exports = {
 			// Изображения
 			{
 				test: /\.(png|jpg|gif|svg)$/i,
-				type: 'asset/resource',
-				generator: {
-					filename: `${PATHS.assets}img/[name][ext]`
+				loader: 'file-loader',
+				options: {
+					name: `${PATHS.assets}img/[name].[ext]`
 				}
 			},
 			// Шрифты
@@ -74,40 +73,23 @@ module.exports = {
 				generator: {
 					filename: `${PATHS.assets}fonts/[name][ext]`
 				}
-			},
-			// CSS
-			// {
-			// 	test: /\.css$/i,
-			// 	use: MiniCssExtractPlugin.loader
-			// }
+			}
 		]
 	},
 	resolve: {
 		alias: {
-			'~': PATHS.src,
-			'@': `${PATHS.src}/js`
+			'~': PATHS.src, // Пример: background-image: url("~/assets/img/image.jpg");
+			'@styles': `${PATHS.src}/pug/styles`,
+			'@blocks': `${PATHS.src}/pug/blocks`,
+			'@layout': `${PATHS.src}/pug/layout`,
+			'@pages': `${PATHS.src}/pug/pages`,
+			'@utils': `${PATHS.src}/pug/utils`,
 		}
 	},
 	plugins: [
-		// HTML
-		// new HtmlWebpackPlugin({
-		// 	template: `${ PATHS.src }/index.html`,
-		// 	title: 'Webpack + Pug template',
-		// 	inject: 'body',
-		// 	filename: './index.html'
-		// }),
-		// new HtmlWebpackPlugin({
-		// 	template: `${ PATHS.src }/page.html`,
-		// 	title: 'Webpack + Pug template another page',
-		// 	inject: 'body',
-		// 	filename: './page.html'
-		// }),
+		// Копирование файлов
 		new CopyWebpackPlugin({
 			patterns: [
-				{
-					from: `${PATHS.src}/${PATHS.assets}img`,
-					to: `${PATHS.assets}img`
-				},
 				{ from: `${PATHS.src}/static`, to: '' }
 			]
 		}),

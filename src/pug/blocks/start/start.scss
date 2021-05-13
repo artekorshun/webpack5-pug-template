@@ -1,0 +1,28 @@
+@use "@styles/utils/vars";
+
+.start {
+	background-image: url("@blocks/start/bg.jpg");
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.block {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	img {
+		width: 300px;
+	}
+}
+
+h1 {
+	font-size: 60px;
+	text-transform: uppercase;
+	font-family: "Roboto Bold", sans-serif;
+	color: vars.$color-main;
+	margin-bottom: 30px;
+	text-align: center;
+}

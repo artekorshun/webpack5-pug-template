@@ -43,12 +43,7 @@ const devWebpackConfig = merge([baseWebpackConfig, {
 						}
 					}
 				]
-			},
-			// CSS
-			// {
-			// 	test: /\.css$/i,
-			// 	use: 'css-loader'
-			// }
+			}
 		]
 	},
 	plugins: [

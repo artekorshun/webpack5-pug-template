@@ -1,0 +1,10 @@
+// ---------- Главный файл стилей ---------- //
+
+@use "@styles/utils/reset";
+@use "@styles/utils/vars";
+@use "@styles/utils/mixins";
+@use "@styles/utils/fonts";
+@use "@styles/utils/libs";
+
+@use "@blocks/start/start";
+@use "@blocks/block/pug";
