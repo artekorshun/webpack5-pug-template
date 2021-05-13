@@ -61,9 +61,9 @@ module.exports = {
 			// Изображения
 			{
 				test: /\.(png|jpg|gif|svg)$/i,
-				loader: 'file-loader',
-				options: {
-					name: `${PATHS.assets}img/[name].[ext]`
+				type: 'asset/resource',
+				generator: {
+					filename: `${PATHS.assets}img/[name][ext]`
 				}
 			},
 			// Шрифты
