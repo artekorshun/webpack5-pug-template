@@ -101,7 +101,8 @@ module.exports = {
 					filename: `./${page.replace(/\.pug/, '.html')}`,
 					title: 'Webpack + Pug template',
 					inject: 'body'
-				}),
+				}
+				)
 		)
 	]
 }
