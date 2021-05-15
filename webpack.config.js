@@ -2,10 +2,17 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const fs = require('fs')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+
+const isDev = process.env.NODE_ENV === 'development'
+const isProd = !isDev
+
+const filename = (ext) => isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`
 
 const PATHS = {
-	src: path.join(__dirname, '../src'),
-	dist: path.join(__dirname, '../dist'),
+	src: path.join(__dirname, './src'),
+	dist: path.join(__dirname, './dist'),
 	assets: 'assets/'
 }
 
@@ -14,16 +21,54 @@ const PAGES = fs
 	.readdirSync(PAGES_DIR)
 	.filter(fileName => fileName.endsWith('.pug'))
 
+const plugins = [
+	new CopyWebpackPlugin({
+		patterns: [
+			{ from: `${PATHS.src}/static`, to: '' }
+		]
+	}),
+	...PAGES.map(
+		page =>
+			new HtmlWebpackPlugin({
+				template: `${PAGES_DIR}/${page}`,
+				filename: `./${page.replace(/\.pug/, '.html')}`,
+				minify: {
+					collapseWhitespace: isProd
+				},
+				title: 'Webpack + Pug template',
+				inject: 'body'
+			})
+	),
+	new CleanWebpackPlugin()
+]
+
+if (isProd) {
+	plugins.push(new MiniCssExtractPlugin(
+		{
+			filename: `${PATHS.assets}css/${filename('css')}`,
+		}
+	))
+}
+
 module.exports = {
-	target: 'web',
-	externals: {
-		paths: PATHS
+	mode: 'development',
+	target: isDev ? 'web' : 'browserslist',
+	devtool: isDev ? 'source-map' : false,
+	devServer: {
+		contentBase: PATHS.dist,
+		port: 8081,
+		open: 'Chrome',
+		compress: true,
+		overlay: {
+			warnings: false,
+			errors: true
+		}
 	},
 	entry: {
 		app: PATHS.src
 	},
 	output: {
-		filename: `${PATHS.assets}js/[name].[contenthash].js`,
+		filename: `${PATHS.assets}js/${filename('js')}`,
 		path: PATHS.dist,
 		publicPath: '/'
 	},
@@ -41,12 +86,10 @@ module.exports = {
 	},
 	module: {
 		rules: [
-			// PUG
 			{
 				test: /.pug$/i,
 				loader: 'pug-loader'
 			},
-			// JavaScript
 			{
 				test: /\.m?js$/,
 				use: {
@@ -58,7 +101,22 @@ module.exports = {
 					}
 				}
 			},
-			// Изображения
+			{
+				test: /\.s[ac]ss$/i,
+				use: [
+					{
+						loader: isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+					},
+					'css-loader',
+					'postcss-loader',
+					{
+						loader: 'sass-loader',
+						options: {
+							implementation: require("sass")
+						}
+					}
+				]
+			},
 			{
 				test: /\.(png|jpg|gif|svg)$/i,
 				type: 'asset/resource',
@@ -66,7 +124,6 @@ module.exports = {
 					filename: `${PATHS.assets}img/[name][ext]`
 				}
 			},
-			// Шрифты
 			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/i,
 				type: 'asset/resource',
@@ -86,23 +143,5 @@ module.exports = {
 			'@utils': `${PATHS.src}/pug/utils`,
 		}
 	},
-	plugins: [
-		// Копирование файлов
-		new CopyWebpackPlugin({
-			patterns: [
-				{ from: `${PATHS.src}/static`, to: '' }
-			]
-		}),
-		// PUG
-		...PAGES.map(
-			page =>
-				new HtmlWebpackPlugin({
-					template: `${PAGES_DIR}/${page}`,
-					filename: `./${page.replace(/\.pug/, '.html')}`,
-					title: 'Webpack + Pug template',
-					inject: 'body'
-				}
-				)
-		)
-	]
+	plugins
 }
