@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const fs = require('fs')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 const isProd = !isDev
@@ -43,11 +44,32 @@ const plugins = [
 ]
 
 if (isProd) {
-	plugins.push(new MiniCssExtractPlugin(
-		{
-			filename: `${PATHS.assets}css/${filename('css')}`,
-		}
-	))
+	plugins.push(
+		new MiniCssExtractPlugin(
+			{
+				filename: `${PATHS.assets}css/${filename('css')}`,
+			}
+		),
+		new ImageMinimizerPlugin({
+			minimizerOptions: {
+				plugins: [
+					['gifsicle', { interlaced: true }],
+					['jpegtran', { progressive: true }],
+					['optipng', { optimizationLevel: 5 }],
+					[
+						'svgo',
+						{
+							plugins: [
+								{
+									removeViewBox: false,
+								},
+							],
+						},
+					],
+				],
+			},
+		})
+	)
 }
 
 module.exports = {
