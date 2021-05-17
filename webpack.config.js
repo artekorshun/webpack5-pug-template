@@ -51,6 +51,7 @@ if (isProd) {
 			}
 		),
 		new ImageMinimizerPlugin({
+			severityError: 'warning',
 			minimizerOptions: {
 				plugins: [
 					['gifsicle', { interlaced: true }],
