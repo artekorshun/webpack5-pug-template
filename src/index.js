@@ -4,7 +4,7 @@
 import './js/main';
 
 // Импорт SCSS
-import '@styles/main.scss';
+import '@styles/index.scss';
 
 // Импорт PUG
 import '@pages/index.pug';
